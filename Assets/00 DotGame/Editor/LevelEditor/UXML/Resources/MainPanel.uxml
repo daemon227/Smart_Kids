@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:ScrollView name="Main">
+        <ui:VisualElement style="flex-grow: 1; height: 30px; flex-direction: row;">
+            <ui:Button text="New Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="buttonNewLevel" style="flex-direction: row; flex-shrink: 1; flex-grow: 1;" />
+            <ui:Button text="Open Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="buttonOpenLevel" style="flex-direction: row; flex-shrink: 1; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:Button text="Play" parse-escape-sequences="true" display-tooltip-when-elided="true" name="buttonPlay" style="height: 50px; -unity-font-style: bold; font-size: 20px; color: rgb(0, 145, 255);" />
+        <ui:Button text="Save Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="buttonSaveLevel" style="height: 35px; -unity-font-style: bold;" />
+        <ui:Foldout text="Level Data" name="LevelData" style="margin-top: 5px; margin-bottom: 5px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); margin-right: 5px; margin-left: 5px;">
+            <ui:IntegerField label="Max HP" value="3" name="intFieldMaxHp" />
+            <ui:IntegerField label="Insect Life Time" value="15" name="intFieldInsectLifeTime" />
+        </ui:Foldout>
+        <ui:Foldout text="Editor Config" name="EditorConfig" style="margin-top: 5px; margin-bottom: 5px; margin-right: 5px; margin-left: 5px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);">
+            <ui:IntegerField label="Grid Size" value="25" name="intFieldGridSize" />
+        </ui:Foldout>
+        <ui:Foldout text="Preview Image" name="PreviewImage" style="margin-bottom: 5px; margin-top: 5px; margin-right: 5px; margin-left: 5px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
+            <ui:Button text="Select Preview Image" parse-escape-sequences="true" display-tooltip-when-elided="true" name="buttonSelectPreviewImage" style="height: 30px;" />
+            <ui:Vector2Field label="Image Position" name="vector2FieldImagePosition" />
+            <ui:Vector2Field label="Image Size" name="vector2FieldImageSize" />
+            <ui:Slider label="Opacity" high-value="1" show-input-field="true" name="sliderOpacity" low-value="0.1" />
+        </ui:Foldout>
+        <ui:Foldout text="Steps" name="Steps" style="border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;">
+            <ui:Button text="Add Step" parse-escape-sequences="true" display-tooltip-when-elided="true" name="buttonAddStep" style="height: 30px;" />
+            <ui:ScrollView name="scrollViewSteps" style="height: auto; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); background-color: rgb(61, 61, 61);" />
+        </ui:Foldout>
+        <ui:ScrollView name="HowTo">
+            <ui:Label tabindex="-1" text="&lt;b&gt;How to:&lt;/b&gt;&#10;&#10;- Ctrl + Mouse Move: Mouse without snap&#10;&#10;&lt;b&gt;Vertex Mode:&lt;/b&gt;&#10;- Left Mouse Click:  Select vertex&#10;- N + Left Mouse Click: New vertex&#10;- Right Mouse Click + vertex: Remove vertex&#10;&#10;&lt;b&gt;Polygon Mode:&lt;/b&gt;&#10;- Left Mouse Click: Select polygon&#10;- N + Left Mouse Click + vertex: Create new polygon| add vertex to polygon  &#10;- Left Mouse click + vertex: Select vertex in polygon&#10;- Right Mouse Click + polygon: Remove polygon" parse-escape-sequences="true" display-tooltip-when-elided="true" style="flex-wrap: wrap; white-space: normal; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+        </ui:ScrollView>
+    </ui:ScrollView>
+</ui:UXML>

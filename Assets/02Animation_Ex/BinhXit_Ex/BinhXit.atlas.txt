@@ -1,0 +1,7 @@
+BinhXit.png
+size:328,391
+filter:Linear,Linear
+pma:true
+BinhXit
+bounds:2,2,324,387
+offsets:1,1,327,389

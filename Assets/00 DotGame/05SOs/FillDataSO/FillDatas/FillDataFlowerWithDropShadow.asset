@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9104a8541dbf7f449b6d6a215bb57c0b, type: 3}
+  m_Name: FillDataFlowerWithDropShadow
+  m_EditorClassIdentifier: 
+  fillDatas:
+  - id: 0
+    displayName: FLOWER
+    sprite: {fileID: 0}
+    hasAnimation: 1
+    stepRange: {x: 0.3, y: 0.33}
+    inset: 0.2
+    lineStep: 0.33
+    lineInset: 0.1
+    zOffset: 3
+    scaleRange: {x: 0.26, y: 0.29}
+    percentRange: {x: 0.25, y: 0.5, z: 0.25}
+  - id: 1
+    displayName: Grass
+    sprite: {fileID: 21300000, guid: fa61d0371c0e4e848bc5701c1724cd18, type: 3}
+    hasAnimation: 0
+    stepRange: {x: 0.18, y: 0.2}
+    inset: 0.1
+    lineStep: 0.23
+    lineInset: 0.01
+    zOffset: 8
+    scaleRange: {x: 0.25, y: 0.35}
+    percentRange: {x: 0.25, y: 0.5, z: 0.25}
+  - id: 3
+    displayName: Snow
+    sprite: {fileID: 21300000, guid: 67f2ce241e2114a44ba6ff4db9a01c98, type: 3}
+    hasAnimation: 0
+    stepRange: {x: 0.2, y: 0.4}
+    inset: 0.2
+    lineStep: 1
+    lineInset: 0.3
+    zOffset: 5
+    scaleRange: {x: 0.01, y: 0.015}
+    percentRange: {x: 0.25, y: 0.5, z: 0.25}
+  prefabs: {fileID: 577224280662134538, guid: 1b4a9a28daf896c42a39c477765fced5, type: 3}
+  defaultSprite: {fileID: 21300000, guid: a25a676ef822070449a2b19167cb8b12, type: 3}
+  wiltedSprite: {fileID: 21300000, guid: 53e64f5d0a4a64a46b8861d27ec864b0, type: 3}
+  scaleTime: 1.5
+  spawnDelay: 0.01
+  angleRotation: 25
+  wiltedDelaySpawn: 0.02
+  zMultiplier: 1
+  globalZMultiplier: 0.5

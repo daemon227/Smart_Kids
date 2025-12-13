@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d3af294dfa62d4293c7997b4c8225c, type: 3}
+  m_Name: NewAllGameLevel
+  m_EditorClassIdentifier: 
+  allLevelId: 0
+  allLevelData:
+  - LevelId: 1
+    LevelData: {fileID: 4900000, guid: fbf7d2914b75c9f479646d67b7a99e1d, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: e00662e9aed9e2442afe7023448063fd, type: 2}
+  - LevelId: 2
+    LevelData: {fileID: 4900000, guid: c04b4c9595d6dbb43976dc31abf9ba87, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: a43a34d00942ab646a21cf7a8bc89696, type: 2}
+  - LevelId: 3
+    LevelData: {fileID: 4900000, guid: fb69f40ce4b1e5f4cbb5f4ce227d6d16, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: 54d89b278d480294dab3ddf25170de85, type: 2}
+  - LevelId: 4
+    LevelData: {fileID: 4900000, guid: 4798ddd7c6a316f41b99c66b5b626059, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: 54d89b278d480294dab3ddf25170de85, type: 2}
+  - LevelId: 5
+    LevelData: {fileID: 4900000, guid: 28d40e6965b4bc6439fdd7441a98fc69, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: 54d89b278d480294dab3ddf25170de85, type: 2}
+  - LevelId: 6
+    LevelData: {fileID: 4900000, guid: 1f222ca5149213c408f5e947af99ff4e, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: 54d89b278d480294dab3ddf25170de85, type: 2}
+  - LevelId: 7
+    LevelData: {fileID: 4900000, guid: 22a3fd301b1e3444a9791f316e9bfe15, type: 3}
+    InsectSpawnSo: {fileID: 11400000, guid: 54d89b278d480294dab3ddf25170de85, type: 2}

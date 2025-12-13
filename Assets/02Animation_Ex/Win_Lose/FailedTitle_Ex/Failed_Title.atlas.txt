@@ -1,0 +1,9 @@
+Failed_Title.png
+size:1024,512
+filter:Linear,Linear
+pma:true
+Rail_1
+bounds:2,2,40,70
+offsets:2,1,44,72
+Title
+bounds:2,74,834,269

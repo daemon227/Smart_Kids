@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Insect
+  - Vertice
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: BackGround
+    uniqueID: 1101407691
+    locked: 0
+  - name: Flower
+    uniqueID: 2043817051
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Insect
+    uniqueID: 611233253
+    locked: 0
+  - name: InsectVfx
+    uniqueID: 1348369815
+    locked: 0
+  - name: Icon
+    uniqueID: 1107005287
+    locked: 0
+  - name: SmokeVfx
+    uniqueID: 3295136711
+    locked: 0
+  - name: UI
+    uniqueID: 1420280585
+    locked: 0
+  - name: WinVFX
+    uniqueID: 3387966155
+    locked: 0

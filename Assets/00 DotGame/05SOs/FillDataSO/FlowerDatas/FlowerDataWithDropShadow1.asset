@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb367a4e28decf4a8f6ff98a6e4909a, type: 3}
+  m_Name: FlowerDataWithDropShadow1
+  m_EditorClassIdentifier: 
+  flowers:
+  - id: 1
+    sprite: {fileID: 21300000, guid: 19f8002767844154e97ff494e085983a, type: 3}
+  - id: 2
+    sprite: {fileID: 21300000, guid: 1cdfdb5a73a815b42be4f1d93712b581, type: 3}
+  - id: 3
+    sprite: {fileID: 21300000, guid: fc69706ef44a7bc44aa08fed2bc1aa94, type: 3}
+  - id: 4
+    sprite: {fileID: 21300000, guid: e8ba838b06f28c041a8f360892a8d994, type: 3}
+  - id: 5
+    sprite: {fileID: 21300000, guid: f6c42736d0615d94d8a4249047b47bc8, type: 3}
+  - id: 6
+    sprite: {fileID: 21300000, guid: a25a676ef822070449a2b19167cb8b12, type: 3}
+  - id: 7
+    sprite: {fileID: 21300000, guid: 696ba2130d674564f893905c00422a5b, type: 3}
+  - id: 8
+    sprite: {fileID: 21300000, guid: 949b81d64f0338445a0ce3817b78c1fc, type: 3}

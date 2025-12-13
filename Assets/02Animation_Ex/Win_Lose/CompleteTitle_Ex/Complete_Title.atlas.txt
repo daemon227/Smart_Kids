@@ -1,0 +1,6 @@
+Complete_Title.png
+size:1024,512
+filter:Linear,Linear
+pma:true
+COMPLETED
+bounds:2,2,834,269

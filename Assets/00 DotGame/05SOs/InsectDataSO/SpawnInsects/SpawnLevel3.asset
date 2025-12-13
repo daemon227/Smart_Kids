@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0eab15edbc1174dadbe7263d66765a, type: 3}
+  m_Name: SpawnLevel3
+  m_EditorClassIdentifier: 
+  insectLifeTime: 35
+  insectsPerturnRange: {x: 3, y: 5}
+  scaleRange: {x: 0.09, y: 0.13}
+  pestInsects:
+  - {fileID: 2225070119658313732, guid: dda4095be0e50754eaf3a838db02ee4f, type: 3}
+  - {fileID: 193657316799970158, guid: be86673e3fc64b74dba6874803487566, type: 3}
+  - {fileID: 235859065040845791, guid: 8d438800af6720547a5fb7ce417a3eb3, type: 3}
+  beneficialInsects: []
+  spawnDistance: 1.1
+  spawnDelay: 0.5
+  delaySpawnRangePerTurn: {x: 50, y: 65}
+  spawnPercent: 100
