@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace DACN.Account
 {   
     public class ChildAccountUIManager : MonoBehaviour
 {
     [Header("Panels")]
+    public GameObject parentPanel;
     public GameObject childListPanel;
     public GameObject addChildPanel;
     public GameObject editChildPanel;
@@ -18,19 +20,23 @@ namespace DACN.Account
     public Transform childListContent;
     public GameObject childItemPrefab;
     public Button addNewChildBtn;
+    public Button backToParentBtn;
+    public TMP_Text parentNameText;
 
     [Header("Add Child UI")]
-    public TMP_InputField addUsername;
     public TMP_InputField addPassword;
     public TMP_InputField addName;
+    public TMP_InputField addAge;
+    //public Button addPasswordToggleBtn;
     public Button addConfirmBtn;
     public Button addCancelBtn;
     public TMP_Text addMsg;
 
     [Header("Edit Child UI")]
-    public TMP_InputField editUsername;
     public TMP_InputField editPassword;
     public TMP_InputField editName;
+    public TMP_InputField editAge;
+    //public Button editPasswordToggleBtn;
     public Button editConfirmBtn;
     public Button editCancelBtn;
     public Button editDeleteBtn;
@@ -47,6 +53,8 @@ namespace DACN.Account
 
     private UserAccount currentParent;
     private string selectedChildUsername;
+    private bool addPasswordVisible = false;
+    //private bool editPasswordVisible = false;
 
     void Start()
     {
@@ -57,18 +65,28 @@ namespace DACN.Account
         Debug.Log("ChildAccountUIManager Start");
         SetupButtons();
         RefreshChildList();
+        
+        // Set initial password content type
+        // addPassword.contentType = TMP_InputField.ContentType.Password;
+        // editPassword.contentType = TMP_InputField.ContentType.Password;
     }
 
     // ===== SETUP BUTTONS =====
     void SetupButtons()
     {
         Debug.Log("Setup Buttons");
+        backToParentBtn.onClick.AddListener(() => {
+            parentPanel.SetActive(true);
+            childListPanel.SetActive(false);
+        });
         addNewChildBtn.onClick.AddListener(ShowAddPanel);
         addConfirmBtn.onClick.AddListener(() => OnAddChild());
         addCancelBtn.onClick.AddListener(() => HideAddPanel());
+        //addPasswordToggleBtn.onClick.AddListener(ToggleAddPassword);
         editConfirmBtn.onClick.AddListener(() => OnEditChild());
         editCancelBtn.onClick.AddListener(() => HideEditPanel());
         editDeleteBtn.onClick.AddListener(() => OnDeleteChild());
+        //editPasswordToggleBtn.onClick.AddListener(ToggleEditPassword);
         //editLimitedTimeBtn.onClick.AddListener(() => ShowLimitedTimePanel());
         limitedTimeConfirmBtn.onClick.AddListener(() => OnSetLimitedTime());
         limitedTimeCancelBtn.onClick.AddListener(() => HideLimitedTimePanel());
@@ -77,6 +95,7 @@ namespace DACN.Account
     // ===== REFRESH LIST =====
     public void RefreshChildList()
     {
+        parentNameText.text = currentParent.name;
         currentParent = LocalDataManager.Instance.currentUser;
         if (currentParent == null) return;
 
@@ -93,20 +112,54 @@ namespace DACN.Account
 
             GameObject item = Instantiate(childItemPrefab, childListContent);
             ChildItemUI itemUI = item.GetComponent<ChildItemUI>();
-            itemUI.SetData(child.name, child.score, child.isLimitedTimeMode ? child.limitedTimePerDay / 60f : 0f);
-            itemUI.OnEditClick = () => ShowEditPanel(child.username);
+            itemUI.SetData(child.name, child.age,child.score, child.isLimitedTimeMode ? child.limitedTimePerDay / 60f : 0f);
+            itemUI.OnEditClick = () => ShowEditPanel(child.childId);
             itemUI.OnEditTimeClick = () => {
-                selectedChildUsername = child.username;
+                selectedChildUsername = child.childId;
                 ShowLimitedTimePanel();
             };
         }
     }
+
+    // ===== PASSWORD TOGGLE =====
+    // void ToggleAddPassword()
+    // {
+    //     addPasswordVisible = !addPasswordVisible;
+    //     if (addPasswordVisible)
+    //     {
+    //         addPassword.contentType = TMP_InputField.ContentType.Standard;
+    //         //addPasswordToggleBtn.GetComponentInChildren<TMP_Text>().text = "Hide";
+    //     }
+    //     else
+    //     {
+    //         addPassword.contentType = TMP_InputField.ContentType.Password;
+    //         //addPasswordToggleBtn.GetComponentInChildren<TMP_Text>().text = "Show";
+    //     }
+    //     addPassword.ForceLabelUpdate();
+    // }
+
+    // void ToggleEditPassword()
+    // {
+    //     editPasswordVisible = !editPasswordVisible;
+    //     if (editPasswordVisible)
+    //     {
+    //         editPassword.contentType = TMP_InputField.ContentType.Standard;
+    //         editPasswordToggleBtn.GetComponentInChildren<TMP_Text>().text = "Hide";
+    //     }
+    //     else
+    //     {
+    //         editPassword.contentType = TMP_InputField.ContentType.Password;
+    //         editPasswordToggleBtn.GetComponentInChildren<TMP_Text>().text = "Show";
+    //     }
+    //     editPassword.ForceLabelUpdate();
+    // }
 
     // ===== ADD CHILD =====
     void ShowAddPanel()
     {
         Debug.Log("Show Add Child Panel");
         addChildPanel.SetActive(true);
+        addChildPanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
         childListPanel.SetActive(false);
         ClearAddFields();
     }
@@ -115,46 +168,56 @@ namespace DACN.Account
     {
         addChildPanel.SetActive(false);
         childListPanel.SetActive(true);
+        childListPanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
         ClearAddFields();
     }
 
     void ClearAddFields()
     {
-        addUsername.text = "";
         addPassword.text = "";
         addName.text = "";
+        addAge.text = "";
         addMsg.text = "";
+        addPasswordVisible = false;
+        //addPassword.contentType = TMP_InputField.ContentType.Password;
+        //addPasswordToggleBtn.GetComponentInChildren<TMP_Text>().text = "Show";
     }
 
     void OnAddChild()
     {
-        if (addUsername.text == "" || addPassword.text == "" || addName.text == "")
+        if (addPassword.text == "" || addName.text == "" || addAge.text == "")
         {
-            addMsg.text = "Không được để trống";
+            addMsg.text = "Fields cannot be empty";
+            return;
+        }
+
+        if (!int.TryParse(addAge.text, out int age) || age < 0 || age > 150)
+        {
+            addMsg.text = "Invalid age";
             return;
         }
 
         if (currentParent == null)
         {
-            addMsg.text = "Lỗi: Không tìm thấy tài khoản cha mẹ";
+            addMsg.text = "Error: Parent account not found";
             return;
         }
 
         bool success = ChildAccountService.AddChild(
             currentParent,
-            addUsername.text,
             addPassword.text,
-            addName.text);
+            addName.text,
+            age);
 
         if (success)
         {
-            addMsg.text = "Thêm tài khoản con thành công";
+            addMsg.text = "Child account created successfully";
             StartCoroutine(HideAddPanelDelayed());
             RefreshChildList();
         }
         else
         {
-            addMsg.text = "Tên đăng nhập đã tồn tại";
+            addMsg.text = "Failed to create child account";
         }
     }
 
@@ -168,18 +231,21 @@ namespace DACN.Account
     void ShowEditPanel(string childUsername)
     {
         selectedChildUsername = childUsername;
-        ChildAccount child = currentParent.childAccounts.Find(c => c.username == childUsername);
+        ChildAccount child = currentParent.childAccounts.Find(c => c.childId == childUsername);
 
         if (child == null) return;
 
-        editUsername.text = child.username;
         editPassword.text = child.password;
         editName.text = child.name;
+        editAge.text = child.age.ToString();
         editMsg.text = "";
-
-        editUsername.interactable = false; // Không cho sửa username
+        
+        // editPasswordVisible = false;
+        // editPassword.contentType = TMP_InputField.ContentType.Password;
+        //editPasswordToggleBtn.GetComponentInChildren<TMP_Text>().text = "Show";
 
         editChildPanel.SetActive(true);
+        editChildPanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
         childListPanel.SetActive(false);
     }
 
@@ -187,14 +253,21 @@ namespace DACN.Account
     {
         editChildPanel.SetActive(false);
         childListPanel.SetActive(true);
+        childListPanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
         selectedChildUsername = "";
     }
 
     void OnEditChild()
     {
-        if (editPassword.text == "" || editName.text == "")
+        if (editPassword.text == "" || editName.text == "" || editAge.text == "")
         {
-            editMsg.text = "Không được để trống";
+            editMsg.text = "Fields cannot be empty";
+            return;
+        }
+
+        if (!int.TryParse(editAge.text, out int age) || age < 0 || age > 150)
+        {
+            editMsg.text = "Invalid age";
             return;
         }
 
@@ -202,17 +275,18 @@ namespace DACN.Account
             currentParent,
             selectedChildUsername,
             editPassword.text,
-            editName.text);
+            editName.text,
+            age);
 
         if (success)
         {
-            editMsg.text = "Cập nhật thành công";
+            editMsg.text = "Updated successfully";
             StartCoroutine(HideEditPanelDelayed());
             RefreshChildList();
         }
         else
         {
-            editMsg.text = "Cập nhật thất bại";
+            editMsg.text = "Update failed";
         }
     }
 
@@ -225,13 +299,13 @@ namespace DACN.Account
 
         if (success)
         {
-            editMsg.text = "Xóa tài khoản thành công";
+            editMsg.text = "Account deleted successfully";
             StartCoroutine(HideEditPanelDelayed());
             RefreshChildList();
         }
         else
         {
-            editMsg.text = "Xóa tài khoản thất bại";
+            editMsg.text = "Failed to delete account";
         }
     }
 
@@ -252,7 +326,7 @@ namespace DACN.Account
     {
         if (string.IsNullOrEmpty(selectedChildUsername)) return;
 
-        ChildAccount child = currentParent.childAccounts.Find(c => c.username == selectedChildUsername);
+        ChildAccount child = currentParent.childAccounts.Find(c => c.childId == selectedChildUsername);
         if (child == null) return;
 
         limitedTimeToggle.isOn = child.isLimitedTimeMode;
@@ -269,6 +343,7 @@ namespace DACN.Account
     {
         limitedTimePanel.SetActive(false);
         childListPanel.SetActive(true);
+        childListPanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
     }
 
     void OnSetLimitedTime()
@@ -284,13 +359,13 @@ namespace DACN.Account
 
             if (success)
             {
-                limitedTimeMsg.text = "Cập nhật thành công";
+                limitedTimeMsg.text = "Updated successfully";
                 StartCoroutine(HideLimitedTimePanelDelayed());
                 RefreshChildList();
             }
             else
             {
-                limitedTimeMsg.text = "Cập nhật thất bại";
+                limitedTimeMsg.text = "Update failed";
             }
             return;
         }
@@ -298,13 +373,13 @@ namespace DACN.Account
         // Bật giới hạn thời gian
         if (!int.TryParse(limitedTimeHours.text, out int hours) || hours < 0)
         {
-            limitedTimeMsg.text = "Giờ không hợp lệ";
+            limitedTimeMsg.text = "Invalid hours";
             return;
         }
 
         if (!int.TryParse(limitedTimeMinutes.text, out int minutes) || minutes < 0 || minutes >= 60)
         {
-            limitedTimeMsg.text = "Phút không hợp lệ (0-59)";
+            limitedTimeMsg.text = "Invalid minutes (0-59)";
             return;
         }
 
@@ -312,7 +387,7 @@ namespace DACN.Account
 
         if (totalSeconds == 0)
         {
-            limitedTimeMsg.text = "Thời gian phải lớn hơn 0";
+            limitedTimeMsg.text = "Time must be greater than 0";
             return;
         }
 
@@ -324,13 +399,13 @@ namespace DACN.Account
 
         if (result)
         {
-            limitedTimeMsg.text = "Cập nhật thành công";
+            limitedTimeMsg.text = "Updated successfully";
             StartCoroutine(HideLimitedTimePanelDelayed());
             RefreshChildList();
         }
         else
         {
-            limitedTimeMsg.text = "Cập nhật thất bại";
+            limitedTimeMsg.text = "Update failed";
         }
     }
 

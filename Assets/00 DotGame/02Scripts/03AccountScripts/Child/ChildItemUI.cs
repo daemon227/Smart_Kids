@@ -23,11 +23,11 @@ namespace DACN.Account
             editTimeBtn.onClick.AddListener(() => OnEditTimeClick?.Invoke());
         }
 
-        public void SetData(string name, int score, float limitedTimePerDay)
+        public void SetData(string name, int age,int score, float limitedTimePerDay)
         {
-            nameText.text = name;
-            scoreText.text = score.ToString();
-            this.limitedTimePerDay.text =  $"Thời gian giới hạn mỗi ngày: {limitedTimePerDay} phút";
+            nameText.text = name + "_Age: "+ age.ToString();
+            scoreText.text = "Score: " +score.ToString();
+            this.limitedTimePerDay.text =  $"Limited Time Per Day: {limitedTimePerDay} mins";
         }
     }
 }

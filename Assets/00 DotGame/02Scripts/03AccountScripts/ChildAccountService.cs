@@ -9,21 +9,21 @@ public static class ChildAccountService
     // ===============================
     public static bool AddChild(
         UserAccount parent,
-        string username,
         string password,
-        string name)
+        string name,
+        int age)
     {
         if (parent == null) return false;
 
-        // Check trùng username
-        if (parent.childAccounts.Any(c => c.username == username))
-            return false;
+        // Tự sinh childId
+        string childId = System.Guid.NewGuid().ToString();
 
         ChildAccount child = new ChildAccount
         {
-            username = username,
+            childId = childId,
             password = password,
             name = name,
+            age = age,
             acountStatus = true,
             score = 0,
             dotLevel = 1,
@@ -43,17 +43,19 @@ public static class ChildAccountService
         UserAccount parent,
         string childUsername,
         string newPassword,
-        string newName)
+        string newName,
+        int newAge)
     {
         if (parent == null) return false;
 
         ChildAccount child = parent.childAccounts
-            .FirstOrDefault(c => c.username == childUsername);
+            .FirstOrDefault(c => c.childId == childUsername);
 
         if (child == null) return false;
 
         child.password = newPassword;
         child.name = newName;
+        child.age = newAge;
 
         LocalDataManager.Instance.Save();
         return true;
@@ -69,7 +71,7 @@ public static class ChildAccountService
         if (parent == null) return false;
 
         ChildAccount child = parent.childAccounts
-            .FirstOrDefault(c => c.username == childUsername);
+            .FirstOrDefault(c => c.childId == childUsername);
 
         if (child == null) return false;
 
@@ -90,7 +92,7 @@ public static class ChildAccountService
         if (parent == null) return false;
 
         ChildAccount child = parent.childAccounts
-            .FirstOrDefault(c => c.username == childUsername);
+            .FirstOrDefault(c => c.childId == childUsername);
 
         if (child == null) return false;
 

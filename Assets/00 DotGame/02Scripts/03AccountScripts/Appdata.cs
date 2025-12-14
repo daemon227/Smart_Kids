@@ -31,9 +31,11 @@ namespace DACN.Account
     [Serializable]
     public class ChildAccount
     {
-        public string username;
+        public string childId;
         public string password;
         public string name;
+        public int age = 0;
+        public int avatarId = 0;
         public bool acountStatus; //true: active, false: banned
         public int score;
         public int dotLevel;
