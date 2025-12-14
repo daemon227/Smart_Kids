@@ -12,10 +12,16 @@ EditorBuildSettings:
     path: Assets/00 DotGame/00Scenes/ParentScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/00 DotGame/00Scenes/MemoryCard_Scene.unity
+    path: Assets/00 DotGame/00Scenes/ChildScene.unity
+    guid: 8a22e968580600547884bd9d26956e0b
+  - enabled: 1
+    path: Assets/00 DotGame/00Scenes/DotGameScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/00 DotGame/00Scenes/MemoryGameScene.unity
     guid: 631dbf1e97d146c44bab1a4e5a599c2d
   - enabled: 1
-    path: Assets/00 DotGame/00Scenes/DotGame.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/00 DotGame/00Scenes/QuizGameScene.unity
+    guid: 659d3daedab9e944d957eaf1c2de52ae
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: fe50772845572584993a925b62b5af31, type: 2}

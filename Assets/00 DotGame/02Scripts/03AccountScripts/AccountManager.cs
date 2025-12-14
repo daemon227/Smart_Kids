@@ -17,6 +17,7 @@ public class AuthUI : MonoBehaviour
     public TMP_InputField loginUser;
     public TMP_InputField loginPass;
     public Button loginPassShowHideBtn;
+    public Toggle rememberMeToggle;
     public TMP_Text loginMsg;
 
     [Header("Register UI")]
@@ -39,9 +40,11 @@ public class AuthUI : MonoBehaviour
     private bool loginPassVisible = false;
     private bool regPassVisible = false;
 
+    private LoadChildProfile loadChildProfile;
+
     void Start()
     {
-        ShowLogin();
+        ShowUIPanel();
         loginButton.onClick.AddListener(OnLogin);
         registerButton.onClick.AddListener(OnRegister);
         switchToRegisterButton.onClick.AddListener(ShowRegister);
@@ -57,14 +60,33 @@ public class AuthUI : MonoBehaviour
         // Setup choose mode buttons
         parentModeButton.onClick.AddListener(OnParentModeSelected);
         childModeButton.onClick.AddListener(OnChildModeSelected);
+
+        loadChildProfile = GetComponent<LoadChildProfile>();
+        
+        // Load Remember Me data
+        LoadRememberMeData();
     }
 
     // ===== PANEL =====
+    public void ShowUIPanel()
+    {
+        if (LocalDataManager.Instance.currentUser != null)
+        {
+            OnShowChooseMode();
+        }
+        else
+        {
+            ShowLogin();
+        }
+    }
     public void ShowLogin()
     {
         loginMsg.gameObject.SetActive(false);
         loginPanel.SetActive(true);
         registerPanel.SetActive(false);
+        
+        // Clear current session when showing login
+        LocalDataManager.Instance.Logout();
     }
 
     public void ShowRegister()
@@ -153,6 +175,10 @@ public class AuthUI : MonoBehaviour
             loginMsg.text = "Đăng nhập thành công";
             LocalDataManager.Instance.currentUser = AuthLocalService.GetCurrentUser(loginUser.text);
             Debug.Log("Login successful: " + loginUser.text);
+            
+            // Save Remember Me data
+            SaveRememberMeData(loginUser.text, loginPass.text);
+            
             // TODO: Load Parent Panel
             loginUser.text = "";
             loginPass.text = "";
@@ -175,6 +201,7 @@ public class AuthUI : MonoBehaviour
 
     public void OnShowChooseChildProfile()
     {
+        loadChildProfile.RefreshChildList();
         chooseChildProfilePanel.SetActive(true);
         chooseChildProfilePanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
         chooseModePanel.SetActive(false);
@@ -188,5 +215,45 @@ public class AuthUI : MonoBehaviour
     public void OnChildModeSelected()
     {
         OnShowChooseChildProfile();
+    }
+
+    // ===== REMEMBER ME =====
+    void LoadRememberMeData()
+    {
+        if (PlayerPrefs.HasKey("RememberMe") && PlayerPrefs.GetInt("RememberMe") == 1)
+        {
+            string savedUsername = PlayerPrefs.GetString("SavedUsername", "");
+            string savedPassword = PlayerPrefs.GetString("SavedPassword", "");
+            
+            loginUser.text = savedUsername;
+            loginPass.text = savedPassword;
+            rememberMeToggle.isOn = true;
+            
+            Debug.Log("Loaded saved login: " + savedUsername);
+        }
+        else
+        {
+            rememberMeToggle.isOn = false;
+        }
+    }
+
+    void SaveRememberMeData(string username, string password)
+    {
+        if (rememberMeToggle.isOn)
+        {
+            PlayerPrefs.SetInt("RememberMe", 1);
+            PlayerPrefs.SetString("SavedUsername", username);
+            PlayerPrefs.SetString("SavedPassword", password);
+            PlayerPrefs.Save();
+            Debug.Log("Saved login credentials");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("RememberMe", 0);
+            PlayerPrefs.DeleteKey("SavedUsername");
+            PlayerPrefs.DeleteKey("SavedPassword");
+            PlayerPrefs.Save();
+            Debug.Log("Cleared saved credentials");
+        }
     }
 }

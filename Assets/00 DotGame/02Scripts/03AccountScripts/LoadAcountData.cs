@@ -26,6 +26,10 @@ namespace DACN.Account
 
             path = Path.Combine(Application.persistentDataPath, "user_data.json");
             Load();
+            
+            // Initialize currentUser and currentChild as null
+            currentUser = null;
+            currentChild = null;
         }
 
         void Load()
@@ -45,6 +49,16 @@ namespace DACN.Account
         {
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(path, json);
+        }
+
+        /// <summary>
+        /// Clear current user session
+        /// </summary>
+        public void Logout()
+        {
+            currentUser = null;
+            currentChild = null;
+            Debug.Log("User logged out");
         }
 
     }
