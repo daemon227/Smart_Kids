@@ -3,12 +3,15 @@ using TMPro;
 using DACN.Account;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class AuthUI : MonoBehaviour
 {
     [Header("Panels")]
     public GameObject loginPanel;
     public GameObject registerPanel;
+    public GameObject chooseModePanel;
+    public GameObject chooseChildProfilePanel;
 
     [Header("Login UI")]
     public TMP_InputField loginUser;
@@ -24,6 +27,11 @@ public class AuthUI : MonoBehaviour
     public TMP_Text regMsg;
     public Button changeToLoginButton;
 
+    [Header("Choose Mode UI")]
+    public Button parentModeButton;
+    public Button childModeButton;
+
+    [Header("Buttons")]
     public Button loginButton;
     public Button registerButton;
     public Button switchToRegisterButton;
@@ -45,6 +53,10 @@ public class AuthUI : MonoBehaviour
         // Set initial password content type
         loginPass.contentType = TMP_InputField.ContentType.Password;
         regPass.contentType = TMP_InputField.ContentType.Password;
+
+        // Setup choose mode buttons
+        parentModeButton.onClick.AddListener(OnParentModeSelected);
+        childModeButton.onClick.AddListener(OnChildModeSelected);
     }
 
     // ===== PANEL =====
@@ -144,12 +156,37 @@ public class AuthUI : MonoBehaviour
             // TODO: Load Parent Panel
             loginUser.text = "";
             loginPass.text = "";
-            SceneManager.LoadScene("MenuScene");
+            OnShowChooseMode();
+            //SceneManager.LoadScene("ParentScene");
         }
         else
         {
             loginMsg.gameObject.SetActive(true);
             loginMsg.text = "Sai tài khoản hoặc mật khẩu";
         }
+    }
+
+    public void OnShowChooseMode()
+    {
+        chooseModePanel.SetActive(true);
+        chooseModePanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
+        loginPanel.SetActive(false);
+    }
+
+    public void OnShowChooseChildProfile()
+    {
+        chooseChildProfilePanel.SetActive(true);
+        chooseChildProfilePanel.transform.DOScale(Vector3.one, 0.5f).From(Vector3.zero).SetEase(Ease.OutBack);
+        chooseModePanel.SetActive(false);
+    }
+
+    public void OnParentModeSelected()
+    {
+        SceneManager.LoadScene("ParentScene");
+    }
+
+    public void OnChildModeSelected()
+    {
+        OnShowChooseChildProfile();
     }
 }

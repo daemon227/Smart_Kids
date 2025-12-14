@@ -11,6 +11,7 @@ namespace DACN.Account
         public AppData data;
         string path;
         public UserAccount currentUser;
+        public ChildAccount currentChild;
 
         void Awake()
         {
