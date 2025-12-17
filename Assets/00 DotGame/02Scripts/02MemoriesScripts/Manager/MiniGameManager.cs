@@ -1,5 +1,8 @@
+using DACN.Memories;
 using UnityEngine;
 
+namespace DACN.Memories
+{
 public class MiniGameManager : MonoBehaviour
 {
     public bool isFinishedMinigame = false;
@@ -31,4 +34,5 @@ public class MiniGameManager : MonoBehaviour
             winLoseUIManager.ShowLosePanel();
         }
     }
+}
 }

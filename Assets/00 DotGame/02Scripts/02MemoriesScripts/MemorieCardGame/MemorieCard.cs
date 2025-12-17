@@ -4,6 +4,8 @@ using DG.Tweening;
 using UnityEngine.UI;
 using System;
 
+namespace DACN.Memories
+{
 public class MemorieCard : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private bool isSpecial = false;
@@ -14,6 +16,7 @@ public class MemorieCard : MonoBehaviour, IPointerClickHandler
     public bool IsSpecial { get => isSpecial; set => isSpecial = value; }   
 
     public event Action<MemorieCard> OnCardFlipped;
+    private bool isAnimating = false;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -26,9 +29,10 @@ public class MemorieCard : MonoBehaviour, IPointerClickHandler
         if (isFlipped) return; // Prevent flipping if already flipped
         transform.DORotate(new Vector3(0, 90, 0), 0.6f).OnComplete(() =>
         {
-            // Here you would typically change the sprite or material to show the card's face
+            // Here y
+            // ou would typically change the sprite or material to show the card's face
             if (IsSpecial)
-            {
+            {  
                 this.GetComponent<Image>().sprite = specialSprite; // Example for special card
                 isFlipped = true;
             }
@@ -36,6 +40,5 @@ public class MemorieCard : MonoBehaviour, IPointerClickHandler
         });
     }
 
-
-
+}
 }

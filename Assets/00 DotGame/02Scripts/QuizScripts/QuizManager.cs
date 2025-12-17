@@ -56,6 +56,14 @@ namespace DACN.Quiz
                 .ToList();
         }
 
+        // ===== GET QUIZZES BY LEVEL AND CREATOR =====
+        public List<Quiz> GetQuizzesByLevelAndCreator(int levelIndex, string creatorUsername)
+        {
+            return quizDatabase.quizzes
+                .Where(q => q.levelIndex == levelIndex && q.creatorUsername == creatorUsername)
+                .ToList();
+        }
+
         // ===== GET ALL QUIZZES =====
         public List<Quiz> GetAllQuizzes()
         {

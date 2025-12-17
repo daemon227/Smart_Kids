@@ -52,6 +52,18 @@ namespace DACN.Account
         }
 
         /// <summary>
+        /// Set current child account
+        /// </summary>
+        public void SetCurrentChild(ChildAccount child)
+        {
+            currentChild = child;
+            if (child != null)
+            {
+                Debug.Log($"Set current child to: {child.name}");
+            }
+        }
+
+        /// <summary>
         /// Clear current user session
         /// </summary>
         public void Logout()
@@ -63,4 +75,3 @@ namespace DACN.Account
 
     }
 }
-

@@ -245,7 +245,7 @@ public class AuthUI : MonoBehaviour
             PlayerPrefs.SetString("SavedUsername", username);
             PlayerPrefs.SetString("SavedPassword", password);
             PlayerPrefs.Save();
-            Debug.Log("Saved login credentials");
+            //Debug.Log("Saved login credentials");
         }
         else
         {
@@ -253,7 +253,7 @@ public class AuthUI : MonoBehaviour
             PlayerPrefs.DeleteKey("SavedUsername");
             PlayerPrefs.DeleteKey("SavedPassword");
             PlayerPrefs.Save();
-            Debug.Log("Cleared saved credentials");
+            //Debug.Log("Cleared saved credentials");
         }
     }
 }

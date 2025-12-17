@@ -56,13 +56,14 @@ namespace DACN.ChildScene
         {
             Debug.Log("Play Memory Game button clicked");
             // Load Memory Game Scene
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MemoryGameScene");
+            SceneManager.LoadScene("MemoryGameScene");
         }
         void OnPlayQuizGame()
         {
             Debug.Log("Play Quiz Game button clicked");
             // Load Quiz Game Scene
-            UnityEngine.SceneManagement.SceneManager.LoadScene("QuizGameScene");
+            // Sau đó load scene Quiz
+            SceneManager.LoadScene("QuizGameScene");
         }
 
         void LoadChildProfile()

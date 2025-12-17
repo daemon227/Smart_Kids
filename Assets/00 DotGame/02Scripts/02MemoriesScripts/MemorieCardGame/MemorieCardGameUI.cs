@@ -1,6 +1,8 @@
 ﻿using TMPro;
 using UnityEngine;
 
+namespace DACN.Memories
+{
 public class MemorieCardGameUI : MonoBehaviour
 {
     public TextMeshProUGUI specialCardFoundCountUI;
@@ -26,4 +28,5 @@ public class MemorieCardGameUI : MonoBehaviour
     {
         specialCardFoundCountUI.text = "Số hình đã được tìm thấy: " + count.ToString() + "/"+ memorieCardGame.SpecialCardCount;
     }
+}
 }

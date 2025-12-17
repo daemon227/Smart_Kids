@@ -105,7 +105,7 @@ namespace DACN.Account
                 // Password correct - save child and load scene
                 LocalDataManager.Instance.currentChild = selectedChildAccount;
                 Debug.Log($"Password correct for child: {selectedChildAccount.name}");
-                
+                LocalDataManager.Instance.SetCurrentChild(selectedChildAccount);
                 CloseConfirmationPanel();
                 SceneManager.LoadScene("ChildScene");
             }
