@@ -803,6 +803,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specialCardFoundCountUI: {fileID: 101146703}
+  levelUI: {fileID: 695994062}
+  scoreUI: {fileID: 162349742}
 --- !u!114 &566542595
 MonoBehaviour:
   m_ObjectHideFlags: 0

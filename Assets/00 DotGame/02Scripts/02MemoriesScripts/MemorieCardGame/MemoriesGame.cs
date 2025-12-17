@@ -1,4 +1,4 @@
-﻿using DACN.Account;
+using DACN.Account;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -37,18 +37,23 @@ public class MemoriesGame : MonoBehaviour
     [SerializeField] private int maxClickCount = 3;
     
     // Animation control
-    //private bool canClick = false;  // Cho phép click sau khi animation xong
+    public static bool canClick = false;  // Cho phép click sau khi animation xong
     private int animatingCardsCount = 0;  // Số thẻ đang flip
+    private bool isGameEnded = false;  // Prevent multiple popup calls
     
     private List<GameObject> cards = new List<GameObject>();// Danh sách lưu trữ các thẻ bài
 
     public int SpecialCardCount { get => specialCardCount; set => specialCardCount = value; }
+    public int CurrentMemoryLevel { get => currentMemoryLevel; }
 
     public event Action<int> OnUpdateSpecialCardFound; // Sự kiện cập nhật số thẻ đặc biệt đã tìm thấy
+    public event Action OnGameWon; // Sự kiện khi thắng game
 
+    private MemorieCardGameUI memorieCardGameUI;
     private void Start()
     {
         // Initialize level generator
+        memorieCardGameUI = GetComponent<MemorieCardGameUI>();
         levelGenerator = GetComponent<MemoriesLevelGenerator>();
         if (levelGenerator == null)
         {
@@ -89,15 +94,20 @@ public class MemoriesGame : MonoBehaviour
     /// </summary>
     private void LoadMemoryLevel(int levelIndex)
     {
+
         MemoriesLevelData levelData = levelGenerator.GetLevelData(levelIndex);
-        
         if (levelData != null)
         {
+            memorieCardGameUI.specialCardFoundCountUI.text = "Số hình đã được tìm thấy: " + 0 + "/" + SpecialCardCount;
+            memorieCardGameUI.levelUI.text = "Level: " + levelIndex.ToString();
+            memorieCardGameUI.scoreUI.text = "Score: " + LocalDataManager.Instance.currentChild.score.ToString();
+
             currentMemoryLevel = levelIndex;
             widthSize = levelData.width;
             heightSize = levelData.height;
             specialCardCount = levelData.specialCardCount;
             specialCardFound = 0;
+            isGameEnded = false;  // Reset game state for new level
             
             // Calculate maxClickCount: player can click at most 50% of total cards before losing
             // This ensures there are always normal cards to find
@@ -175,6 +185,7 @@ public class MemoriesGame : MonoBehaviour
     public IEnumerator ShowSpecialCard() // Hiển thị thẻ đặc biệt trong 2 giây
     {
         // Disable click during initial flip animation
+        canClick = false;  // Prevent any clicks during reveal
         animatingCardsCount = cards.Count;  // All cards are animating
         
         yield return new WaitForSeconds(3f);
@@ -200,6 +211,7 @@ public class MemoriesGame : MonoBehaviour
                     // Enable click when all animations done
                     if (animatingCardsCount <= 0)
                     {
+                        canClick = true;  // NOW allow clicks
                         Debug.Log("[MemoriesGame] All cards ready - Click enabled");
                     }
                 });
@@ -218,7 +230,7 @@ public class MemoriesGame : MonoBehaviour
             
             // Disable click during flip animation
             DisableClick();
-            
+  
             // Check win after flip animation completes (0.8s total for both rotations)
             StartCoroutine(CheckWinAfterAnimation());
         }
@@ -241,7 +253,7 @@ public class MemoriesGame : MonoBehaviour
 
     private void DisableClick()
     {
-        //canClick = false;
+        //canClick = false;  // Disable clicks during animation
         animatingCardsCount = 1;  // 1 card is animating
     }
 
@@ -249,7 +261,6 @@ public class MemoriesGame : MonoBehaviour
     {
         // Wait for flip animation to complete (0.4s rotate + 0.4s rotate back = 0.8s)
         yield return new WaitForSeconds(0.8f);
-        
         CheckWin();
     }
 
@@ -257,6 +268,12 @@ public class MemoriesGame : MonoBehaviour
     {
         // Wait for any ongoing animations
         yield return new WaitForSeconds(0.8f);
+        
+        // Prevent multiple popup calls
+        if (isGameEnded) yield break;
+        
+        isGameEnded = true;  // Mark game as ended
+        canClick = false;  // Disable further clicks
         
         // Show lose popup
         if (resultPopup != null)
@@ -267,12 +284,14 @@ public class MemoriesGame : MonoBehaviour
 
     private void CheckWin()
     {
+        // Prevent multiple popup calls
+        if (isGameEnded) return;
+        
         if(specialCardFound >= SpecialCardCount)
         {
             Debug.Log($"You win the game! Level {currentMemoryLevel} completed!");
-            
-            // Disable click before showing popup
-            //canClick = false;
+            isGameEnded = true;  // Mark game as ended
+            canClick = false;  // Disable further clicks
             
             // Show win popup
             if (resultPopup != null)
@@ -280,11 +299,7 @@ public class MemoriesGame : MonoBehaviour
                 resultPopup.ShowWinPopup(currentMemoryLevel);
             }
         }
-        else
-        {
-            // Re-enable click if didn't win yet
-            //canClick = true;
-        }
+      
     }
 
     private void HandleNextLevel()
@@ -294,6 +309,7 @@ public class MemoriesGame : MonoBehaviour
         {
             currentMemoryLevel++;
             LocalDataManager.Instance.currentChild.memoryLevel = currentMemoryLevel;
+            LocalDataManager.Instance.currentChild.score += 10; // Add 10 points for level completion
             LocalDataManager.Instance.Save();
             LoadMemoryLevel(currentMemoryLevel);
         }
@@ -306,13 +322,14 @@ public class MemoriesGame : MonoBehaviour
         }
     }
 
-    public void EndGame()
+    public void AddPointsToChild(int points)
     {
-        // Deprecated - use CheckWin() and HandleNextLevel() instead
-        if(specialCardFound >= SpecialCardCount)
+        var currentChild = LocalDataManager.Instance.currentChild;
+        if (currentChild != null)
         {
-            Debug.Log($"You win the game! Level {currentMemoryLevel} completed!");
-            MiniGameManager.Instance.EndMiniGame(true);
+            currentChild.score += points;
+            LocalDataManager.Instance.Save();
+            Debug.Log($"[MemoriesGame] Added {points} points to child {currentChild.name}. Total score: {currentChild.score}");
         }
     }
 }

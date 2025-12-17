@@ -6,6 +6,8 @@ namespace DACN.Memories
 public class MemorieCardGameUI : MonoBehaviour
 {
     public TextMeshProUGUI specialCardFoundCountUI;
+    public TextMeshProUGUI levelUI;
+    public TextMeshProUGUI scoreUI;
     private MemoriesGame memorieCardGame;
 
     private void Awake()
