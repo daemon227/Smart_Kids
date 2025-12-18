@@ -12,6 +12,9 @@ namespace DACN.Account
         string path;
         public UserAccount currentUser;
         public ChildAccount currentChild;
+        public AudioSource bgmSource;
+        public AudioClip bgmClip;
+
 
         void Awake()
         {
@@ -31,7 +34,14 @@ namespace DACN.Account
             // Initialize currentUser and currentChild as null
             currentUser = null;
             currentChild = null;
+
+            // Setup AudioSource for BGM
+            bgmSource = gameObject.AddComponent<AudioSource>();
+            bgmSource.loop = true;
+            bgmSource.clip = bgmClip;
+            bgmSource.Play();
         }
+
 
         void Load()
         {

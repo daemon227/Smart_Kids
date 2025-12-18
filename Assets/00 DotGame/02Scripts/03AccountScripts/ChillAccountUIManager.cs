@@ -383,7 +383,7 @@ namespace DACN.Account
             return;
         }
 
-        int totalSeconds = hours * 3600 + minutes * 60;
+        int totalSeconds = hours *60 + minutes;
 
         if (totalSeconds == 0)
         {

@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,19 +18,22 @@ namespace DACN.Account
         public TMP_Text parentNameText;
 
         [Header("Panel")]
-
         public GameObject childListPanel;
-        //public GameObject leaderboardPanel;
+        public GameObject leaderboardPanel;
         public GameObject quizManagerPanel;
+
+        private LeaderboardUIManager leaderboardUIManager;
     
         void Start()
         {
             parentNameText.text = "" + LocalDataManager.Instance.currentUser.name;
             openChildListBtn.onClick.AddListener(OpenChildListUI);
-            //openLeaderboardBtn.onClick.AddListener(OpenLeaderboardUI);
+            openLeaderboardBtn.onClick.AddListener(OpenLeaderboardUI);
             quizManagerBtn.onClick.AddListener(OpenQuizManagerUI);
-
             changeModeBtn.onClick.AddListener(ChangeMode);
+
+            // Get or create LeaderboardUIManager
+            leaderboardUIManager = GetComponent<LeaderboardUIManager>();
         }
 
         private void OpenQuizManagerUI()
@@ -45,7 +45,8 @@ namespace DACN.Account
 
         private void OpenLeaderboardUI()
         {
-            throw new NotImplementedException();
+            mainPanel.gameObject.SetActive(false);
+            leaderboardUIManager.OpenLeaderboard();
         }
 
         void OpenChildListUI()

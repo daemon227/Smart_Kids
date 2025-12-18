@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+#if UNITY_EDITOR
 public class TestEditor : EditorWindow
 {
     [MenuItem("Window/UI Toolkit/TestEditor")]
@@ -45,3 +46,4 @@ public class TestEditor : EditorWindow
         root.Add(myElement);
     }
 }
+#endif

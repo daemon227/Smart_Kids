@@ -21,6 +21,7 @@ namespace DACN.ChildScene
         public Button playMemoryGameButton;
         public Button playQuizGameButton;
         public Button changeModeButton;
+        public TextMeshProUGUI timeText;
 
         [Header("Text Elements")]
         public TMP_Text childNameText;
@@ -33,7 +34,9 @@ namespace DACN.ChildScene
         public Button confirmBtn;
         public Button cancelBtn;
         public TMP_Text confirmMsg;
-
+        private bool isRunOutOfTime = false;
+    
+        private ChildAccount childAccount;
         void Start()
         {
             // Setup button listeners
@@ -44,7 +47,61 @@ namespace DACN.ChildScene
             confirmBtn.onClick.AddListener(OnConfirmParentPassword);
             cancelBtn.onClick.AddListener(OnCancelPassword);
 
+            // Setup password input field to hide characters
+            if (passwordInputField != null)
+            {
+                passwordInputField.contentType = TMP_InputField.ContentType.Password;
+            }
+
+            childAccount = LocalDataManager.Instance.currentChild;
             LoadChildProfile();
+            if (childAccount.isLimitedTimeMode)
+            {
+                timeText.gameObject.SetActive(true);
+                isRunOutOfTime = false;
+            }
+            else
+            {
+                timeText.gameObject.SetActive(false);
+                isRunOutOfTime = true;
+            }
+            SetButtonInteractable(true);
+        }
+
+        void Update()
+        {
+            SetTime();
+        } 
+
+        public void SetButtonInteractable(bool interactable)
+        {
+            playDotGameButton.interactable = interactable;
+            playMemoryGameButton.interactable = interactable;
+            playQuizGameButton.interactable = interactable;
+        }
+        private float secondCounter = 0f;
+        public void SetTime()
+        {
+            if (childAccount == null || childAccount.isLimitedTimeMode == false) return;
+            if (isRunOutOfTime) return;
+            
+            secondCounter += Time.deltaTime;
+
+            if (secondCounter >= 60f)
+            {
+                LocalDataManager.Instance.currentChild.limitedTimePerDay--;
+                secondCounter = 0f;
+                LocalDataManager.Instance.Save();
+            }
+
+            if (LocalDataManager.Instance.currentChild.limitedTimePerDay <= 0)
+            {
+                LocalDataManager.Instance.currentChild.limitedTimePerDay = 0;
+                isRunOutOfTime = true;
+                SetButtonInteractable(false);
+            }
+
+            timeText.text = $"Time Left: {LocalDataManager.Instance.currentChild.limitedTimePerDay} mins";
         }
         void OnPlayDotGame()
         {

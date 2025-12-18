@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Linq;
+using Unity.Services.LevelPlay;
 
 namespace DACN.Quiz
 {
@@ -33,6 +34,10 @@ namespace DACN.Quiz
         private List<string> shuffledAnswers = new List<string>();
         private bool fiftyFiftyUsed = false;
         private List<int> hiddenAnswerIndices = new List<int>();
+        
+        private LevelPlayRewardedAd rewardedVideoAd;
+        private bool isWatchingAd = false;
+        private bool pendingFiftyFifty = false;
 
         public System.Action<bool> OnAnswerSelected; // true = correct, false = incorrect
 
@@ -40,6 +45,7 @@ namespace DACN.Quiz
         {
             SetupButtons();
             SetupBoosters();
+            InitializeRewardedAd();
         }
 
         private void SetupBoosters()
@@ -47,6 +53,70 @@ namespace DACN.Quiz
             if (fiftyFiftyButton != null)
             {
                 fiftyFiftyButton.onClick.AddListener(OnFiftyFiftyClicked);
+            }
+        }
+        
+        private void InitializeRewardedAd()
+        {
+            if (rewardedVideoAd == null)
+            {
+                // Create Rewarded Video object
+                rewardedVideoAd = new LevelPlayRewardedAd(AdConfig.RewardedVideoAdUnitId);
+                
+                // Register to Rewarded Video events
+                rewardedVideoAd.OnAdLoaded += OnRewardedVideoLoaded;
+                rewardedVideoAd.OnAdLoadFailed += OnRewardedVideoLoadFailed;
+                rewardedVideoAd.OnAdDisplayed += OnRewardedVideoDisplayed;
+                rewardedVideoAd.OnAdDisplayFailed += OnRewardedVideoDisplayFailed;
+                rewardedVideoAd.OnAdClosed += OnRewardedVideoClosed;
+            }
+        }
+        
+        private void OnRewardedVideoLoaded(LevelPlayAdInfo adInfo)
+        {
+            Debug.Log($"[QuizPlayUIManager] Rewarded Video Loaded: {adInfo}");
+            if (rewardedVideoAd.IsAdReady())
+            {
+                Debug.Log("[QuizPlayUIManager] Showing Rewarded Video Ad");
+                isWatchingAd = true;
+                // Pause game
+                //GameManager.Instance.canInteract = false;
+                rewardedVideoAd.ShowAd();
+            }
+        }
+        
+        private void OnRewardedVideoLoadFailed(LevelPlayAdError error)
+        {
+            Debug.Log($"[QuizPlayUIManager] Rewarded Video Load Failed: {error}");
+            pendingFiftyFifty = false;
+        }
+        
+        private void OnRewardedVideoDisplayed(LevelPlayAdInfo adInfo)
+        {
+            Debug.Log($"[QuizPlayUIManager] Rewarded Video Displayed: {adInfo}");
+        }
+        
+        private void OnRewardedVideoDisplayFailed(LevelPlayAdInfo adInfo, LevelPlayAdError error)
+        {
+            Debug.Log($"[QuizPlayUIManager] Rewarded Video Display Failed: {adInfo}, Error: {error}");
+            isWatchingAd = false;
+            pendingFiftyFifty = false;
+            // Resume game
+            //GameManager.Instance.canInteract = true;
+        }
+        
+        private void OnRewardedVideoClosed(LevelPlayAdInfo adInfo)
+        {
+            Debug.Log($"[QuizPlayUIManager] Rewarded Video Closed: {adInfo}");
+            isWatchingAd = false;
+            // Resume game
+            //GameManager.Instance.canInteract = true;
+            
+            // Now use the fifty fifty booster
+            if (pendingFiftyFifty)
+            {
+                pendingFiftyFifty = false;
+                UseFiftyFiftyBooster();
             }
         }
 
@@ -138,9 +208,12 @@ namespace DACN.Quiz
 
         private void OnFiftyFiftyClicked()
         {
-            if (fiftyFiftyUsed || isAnswered) return;
+            if (fiftyFiftyUsed || isAnswered || isWatchingAd) return;
             
-            UseFiftyFiftyBooster();
+            // Load rewarded video first
+            Debug.Log("[QuizPlayUIManager] Loading Rewarded Video for 50-50 booster");
+            pendingFiftyFifty = true;
+            rewardedVideoAd.LoadAd();
         }
 
         private void UseFiftyFiftyBooster()
@@ -243,6 +316,20 @@ namespace DACN.Quiz
                 {
                     boosterImage.color = normalColor;
                 }
+            }
+        }
+        
+        private void OnDisable()
+        {
+            // Clean up event subscriptions
+            if (rewardedVideoAd != null)
+            {
+                rewardedVideoAd.OnAdLoaded -= OnRewardedVideoLoaded;
+                rewardedVideoAd.OnAdLoadFailed -= OnRewardedVideoLoadFailed;
+                rewardedVideoAd.OnAdDisplayed -= OnRewardedVideoDisplayed;
+                rewardedVideoAd.OnAdDisplayFailed -= OnRewardedVideoDisplayFailed;
+                rewardedVideoAd.OnAdClosed -= OnRewardedVideoClosed;
+                rewardedVideoAd.DestroyAd();
             }
         }
     }

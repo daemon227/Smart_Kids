@@ -36,6 +36,7 @@ namespace DACN.Account
             backBtn.onClick.AddListener(OpenPanel);
             confirmBtn.onClick.AddListener(OnConfirmPassword);
             cancelBtn.onClick.AddListener(OnCancelPassword);
+            passwordInputField.contentType = TMP_InputField.ContentType.Password;
             RefreshChildList();
         }
 

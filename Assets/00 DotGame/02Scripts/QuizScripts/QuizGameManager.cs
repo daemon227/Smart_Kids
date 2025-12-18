@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using DACN.Account;
+using UnityEngine.UI;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 namespace DACN.Quiz
 {
@@ -15,20 +18,27 @@ namespace DACN.Quiz
         [SerializeField] private int pointsPerCorrectAnswer = 10;
         [SerializeField] private float delayBeforeNextQuiz = 0.5f;
 
+        public GameObject pausePanel;
+        public Button settingButton;
+        public Button closeButton;
+        public Button homeButton;
+
+        public TMPro.TextMeshProUGUI scoreText;
+
         private Quiz currentQuiz;
         private int currentQuizLevel;
         private List<Quiz> availableQuizzes;
 
         private void Start()
         {
-            Debug.Log("[QuizGameManager] Start called");
-            Debug.Log($"[QuizGameManager] CurrentUser: {(LocalDataManager.Instance.currentUser != null ? LocalDataManager.Instance.currentUser.username : "NULL")}");
-            Debug.Log($"[QuizGameManager] CurrentChild: {(LocalDataManager.Instance.currentChild != null ? LocalDataManager.Instance.currentChild.name : "NULL")}");
-
+            settingButton.onClick.AddListener(OnSettingButtonClicked);
+            closeButton.onClick.AddListener(OnCloseButtonClicked);
+            homeButton.onClick.AddListener(OnHomeButtonClicked);
             // Initialize with current child's quiz level
             var currentChild = LocalDataManager.Instance.currentChild;
             if (currentChild != null)
             {
+                scoreText.text = "Score: " + currentChild.score.ToString();
                 currentQuizLevel = currentChild.quizLevel;
                 if (currentQuizLevel < 1)
                 {
@@ -179,6 +189,7 @@ namespace DACN.Quiz
             }
 
             currentChild.score += points;
+            scoreText.text = "Score: " + currentChild.score.ToString();
             LocalDataManager.Instance.Save();
             Debug.Log($"[QuizGameManager] Added {points} points to child {currentChild.name}. Total score: {currentChild.score}");
         }
@@ -208,5 +219,24 @@ namespace DACN.Quiz
                 StartCoroutine(LoadNextQuizDelayed());
             }
         }
+
+        void OnSettingButtonClicked()
+    {
+        pausePanel.SetActive(true);    
+        pausePanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+    }
+
+    void OnCloseButtonClicked()
+    {
+        pausePanel.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            pausePanel.SetActive(false);
+        });
+    }
+
+    void OnHomeButtonClicked()
+    {
+        SceneManager.LoadScene("ChildScene");
+    }
     }
 }
