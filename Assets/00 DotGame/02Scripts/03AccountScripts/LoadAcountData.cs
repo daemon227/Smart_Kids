@@ -25,6 +25,7 @@ namespace DACN.Account
             DontDestroyOnLoad(gameObject);
 
             path = Path.Combine(Application.persistentDataPath, "user_data.json");
+            Debug.Log(Application.persistentDataPath);
             Load();
             
             // Initialize currentUser and currentChild as null

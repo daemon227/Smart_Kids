@@ -16,12 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e0ad80b10846d944ca4569cb2cd17d91
-  m_SerializeEntries:
-  - m_GUID: fb69f40ce4b1e5f4cbb5f4ce227d6d16
-    m_Address: Assets/00 Game/06LevelData/level_4.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7854e239114609b48b3799cc8ee883a6, type: 2}
   m_SchemaSet:

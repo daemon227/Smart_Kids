@@ -5,6 +5,8 @@ using System.Linq;
 using System;
 using DG.Tweening;
 using Inwave.DongA.DotPuzzle.Data;
+using DACN.Account;
+using TMPro;
 
 namespace Inwave.DongA.DotPuzzle.Manager
 {
@@ -25,6 +27,8 @@ namespace Inwave.DongA.DotPuzzle.Manager
         public AllLevelDataSO allLevelDataSO; 
         public int currentStepIndex;
         public bool isLevelLoaded;
+
+        public TextMeshProUGUI scoreText;
         
         public event Action OnLevelLoadedEvent;
         public event Action OnStartLoadLevelEvent;
@@ -45,12 +49,18 @@ namespace Inwave.DongA.DotPuzzle.Manager
 
         private void Start()
         {
-             LoadLevelData();
+            currentLevel = LocalDataManager.Instance.currentChild.dotLevel;
+            scoreText.text = "Score: " + LocalDataManager.Instance.currentChild.score.ToString();
+            LoadLevelData();
         }
 
         public void NextLevel()
         {
             currentLevel++;
+            LocalDataManager.Instance.currentChild.dotLevel = currentLevel;
+            LocalDataManager.Instance.currentChild.score += 10;
+            scoreText.text = "Score: " + LocalDataManager.Instance.currentChild.score.ToString();
+            LocalDataManager.Instance.Save();
             
             if(currentLevel > allLevelDataSO.allLevelData.Length) currentLevel = 1; 
             

@@ -1,6 +1,8 @@
 
 using Inwave.DongA.DotPuzzle.Manager;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Inwave.DongA.DotPuzzle.UIManager
 {
@@ -42,8 +44,8 @@ namespace Inwave.DongA.DotPuzzle.UIManager
         public void ContinueGame()
         {
             Debug.Log("Continue game");
-            //GameManager.Instance.isPaused = false;
             ButtonEventManager.Instance.onClosePopupButtonClick?.Invoke();
+            SceneManager.LoadScene("ChildScene");
         }
         
     }

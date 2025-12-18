@@ -31,6 +31,7 @@ public class AuthUI : MonoBehaviour
     [Header("Choose Mode UI")]
     public Button parentModeButton;
     public Button childModeButton;
+    public Button logoutButton;
 
     [Header("Buttons")]
     public Button loginButton;
@@ -60,6 +61,7 @@ public class AuthUI : MonoBehaviour
         // Setup choose mode buttons
         parentModeButton.onClick.AddListener(OnParentModeSelected);
         childModeButton.onClick.AddListener(OnChildModeSelected);
+        logoutButton.onClick.AddListener(OnLogout);
 
         loadChildProfile = GetComponent<LoadChildProfile>();
         
@@ -215,6 +217,12 @@ public class AuthUI : MonoBehaviour
     public void OnChildModeSelected()
     {
         OnShowChooseChildProfile();
+    }
+    public void OnLogout()
+    {
+        LocalDataManager.Instance.Logout();
+        chooseModePanel.SetActive(false);
+        ShowLogin();
     }
 
     // ===== REMEMBER ME =====

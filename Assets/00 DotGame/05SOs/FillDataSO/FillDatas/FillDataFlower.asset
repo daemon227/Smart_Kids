@@ -17,12 +17,12 @@ MonoBehaviour:
     displayName: FLOWER
     sprite: {fileID: 0}
     hasAnimation: 1
-    stepRange: {x: 0.28, y: 0.3}
-    inset: 0.2
+    stepRange: {x: 0.23, y: 0.29}
+    inset: 0.15
     lineStep: 0.33
     lineInset: 0.1
     zOffset: 3
-    scaleRange: {x: 0.26, y: 0.29}
+    scaleRange: {x: 0.29, y: 0.33}
     percentRange: {x: 0.25, y: 0.5, z: 0.25}
   - id: 1
     displayName: Grass

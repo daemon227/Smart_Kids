@@ -16,17 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 7b284c1bdce80fb43aa7a0852fdc50cc
-  m_SerializeEntries:
-  - m_GUID: c04b4c9595d6dbb43976dc31abf9ba87
-    m_Address: Assets/00 Game/06LevelData/level_2.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fbf7d2914b75c9f479646d67b7a99e1d
-    m_Address: Assets/00 Game/06LevelData/level_1.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7854e239114609b48b3799cc8ee883a6, type: 2}
   m_SchemaSet:
