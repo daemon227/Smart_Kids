@@ -112,7 +112,7 @@ namespace DACN.Account
 
             GameObject item = Instantiate(childItemPrefab, childListContent);
             ChildItemUI itemUI = item.GetComponent<ChildItemUI>();
-            itemUI.SetData(child.name, child.age,child.score, child.isLimitedTimeMode ? child.limitedTimePerDay / 60f : 0f);
+            itemUI.SetData(child.name, child.age,child.score, child.isLimitedTimeMode ? child.limitedTimePerDay : 0f);
             itemUI.OnEditClick = () => ShowEditPanel(child.childId);
             itemUI.OnEditTimeClick = () => {
                 selectedChildUsername = child.childId;
@@ -330,9 +330,9 @@ namespace DACN.Account
         if (child == null) return;
 
         limitedTimeToggle.isOn = child.isLimitedTimeMode;
-        int seconds = child.limitedTimePerDay;
-        limitedTimeHours.text = (seconds / 3600).ToString();
-        limitedTimeMinutes.text = ((seconds % 3600) / 60).ToString();
+        int totalMinutes = child.limitedTimePerDay;
+        limitedTimeHours.text = (totalMinutes / 60).ToString();
+        limitedTimeMinutes.text = (totalMinutes % 60).ToString("D2");
         limitedTimeMsg.text = "";
 
         limitedTimePanel.SetActive(true);
@@ -383,9 +383,9 @@ namespace DACN.Account
             return;
         }
 
-        int totalSeconds = hours *60 + minutes;
+        int totalMinutes = hours * 60 + minutes;
 
-        if (totalSeconds == 0)
+        if (totalMinutes == 0)
         {
             limitedTimeMsg.text = "Time must be greater than 0";
             return;
@@ -395,7 +395,7 @@ namespace DACN.Account
             currentParent,
             selectedChildUsername,
             true,
-            totalSeconds);
+            totalMinutes);
 
         if (result)
         {
